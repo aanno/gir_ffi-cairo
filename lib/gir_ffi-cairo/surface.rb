@@ -7,7 +7,7 @@ module Cairo
     # context
     # http://www.cairographics.org/manual/cairo-cairo-t.html
     
-   def destroy
+    def destroy
       Lib.cairo_surface_destroy self
     end
     

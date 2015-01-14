@@ -1,3 +1,6 @@
+# Cairo documentation
+# http://www.cairographics.org/manual/index.html
+
 module Cairo
   load_class :Context
 
@@ -28,13 +31,33 @@ module Cairo
     # context
     # http://www.cairographics.org/manual/cairo-cairo-t.html
     
+    def destroy
+      Lib.cairo_destroy self
+    end
+    
+    def paint
+      Lib.cairo_paint self
+    end
+    
+    def paint_with_alpha alpha
+      Lib.cairo_paint_with_alpha self, alpha
+    end
+    
     def set_source_rgb red, green, blue
       Lib.cairo_set_source_rgb self, red, green, blue
     end
     
-    def destroy
-      Lib.cairo_destroy self
+    def set_line_width width 
+      Lib.cairo_set_line_width self, width
     end
+    
+    def stroke
+      Lib.cairo_stroke self
+    end
+    
+    def stroke_preserver
+      Lib.cairo_stroke_preserve self
+    end    
     
     # paths
     # http://www.cairographics.org/manual/cairo-Paths.html#cairo-move-to
@@ -47,15 +70,19 @@ module Cairo
       Lib.cairo_move_to self, x, y
     end
     
+    def rectangle x, y, width, height
+      Lib.cairo_rectangle self, x, y, width, height
+    end
+    
     # text 
     # http://www.cairographics.org/manual/cairo-text.html
     
     def select_font_face family, slant, weight
-      # Lib.cairo_select_font_face self, family, slant, weight
+      Lib.cairo_select_font_face self, family, slant, weight
     end
     
     def set_font_size size 
-      # Lib.cairo_set_font_size self, size
+      Lib.cairo_set_font_size self, size
     end
     
     def show_text utf8
@@ -82,10 +109,20 @@ module Cairo
     # context
     # http://www.cairographics.org/manual/cairo-cairo-t.html
     
+    attach_function :cairo_destroy, [:pointer], :void
+    
+    attach_function :cairo_paint, [:pointer], :void
+    
+    attach_function :cairo_paint_with_alpha, [:pointer, :double], :void
+    
+    attach_function :cairo_set_line_width, [:pointer, :double], :void
+    
     attach_function :cairo_set_source_rgb,
       [:pointer, :double, :double, :double], :void
     
-    attach_function :cairo_destroy, [:pointer], :void
+    attach_function :cairo_stroke, [:pointer], :void
+    
+    attach_function :cairo_stroke_preserve, [:pointer], :void
     
     # paths
     # http://www.cairographics.org/manual/cairo-Paths.html#cairo-move-to
@@ -94,12 +131,14 @@ module Cairo
     
     attach_function :cairo_move_to, [:pointer, :double, :double], :void
     
+    attach_function :cairo_rectangle, [:pointer, :double, :double, :double, :double], :void
+    
     # text 
     # http://www.cairographics.org/manual/cairo-text.html
     
-    # attach_function :cairo_select_font_face [:pointer, :string, :double, :double], :void
+    attach_function :cairo_select_font_face, [:pointer, :string, :double, :double], :void
     
-    # attach_function :cairo_set_font_size [:pointer, :double], :void
+    attach_function :cairo_set_font_size, [:pointer, :double], :void
     
     attach_function :cairo_show_text, [:pointer, :string], :void
     
